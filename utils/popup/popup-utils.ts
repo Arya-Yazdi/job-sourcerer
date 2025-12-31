@@ -61,5 +61,14 @@ export function parseFetchedJob(
 }
 
 export function getJobSiteName(url: string): JobSiteNameType | null {
-  return 'linkedin';
+  let baseUrl: null | string = null;
+  try {
+    baseUrl = new URL(url).origin;
+  } catch (e) {
+    return null;
+  }
+  if (baseUrl === null) return null;
+  const jobSiteNames: JobSiteNameType[] = ['linkedin', 'handshake'];
+  for (const n of jobSiteNames) if (baseUrl.includes(n)) return n;
+  return null;
 }
