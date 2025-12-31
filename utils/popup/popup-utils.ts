@@ -1,4 +1,4 @@
-import { JobSelectType, jobTable } from '../db/schema';
+import { JobSelectType, JobSiteNameType, jobTable } from '../db/schema';
 import { onsiteData, remoteData } from './popup-save-job.test';
 
 export function getHandshakeJobId(url: string): number | null {
@@ -58,4 +58,8 @@ export function parseFetchedJob(
   res.payType = d.salaryRange.paySchedule.name ?? '';
 
   return res;
+}
+
+export function getJobSiteName(url: string): JobSiteNameType | null {
+  return 'linkedin';
 }

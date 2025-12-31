@@ -10,6 +10,8 @@ import {
 import { z } from 'zod';
 import { relations } from 'drizzle-orm';
 
+export type JobSiteNameType = 'linkedin' | 'handshake'
+
 export const jobStatus = [
   'search result',
   'recently added',

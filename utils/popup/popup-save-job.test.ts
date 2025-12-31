@@ -1,5 +1,30 @@
-import { getHandshakeJobId, parseFetchedJob } from './popup-utils.ts';
+import {
+  getHandshakeJobId,
+  getJobSiteName,
+  parseFetchedJob,
+} from './popup-utils.ts';
 import { describe, expect, test } from 'vitest';
+
+describe('getJobSiteName Tests', () => {
+  test('handshake', () => {
+    expect(
+      getJobSiteName(
+        'https://app.joinhandshake.com/job-search/10119675?page=1&per_page=25'
+      )
+    ).toBe('handshake');
+  });
+  test('linkedin', () => {
+    expect(
+      getJobSiteName(
+        'https://www.linkedin.com/jobs/view/4325252246/?alternateChannel=search&eBP=CwEAAAGbdWOV8yO2WrYcm3q7ZQuLOmNTcJfACh64cmZYzf8VzvP0zjKfgPw-o7fJDoBmFibZrcP36UFxSCHrJMqp4XlytR3vZP-OSff47KczgUoKQa5jyYsfgr0tkIi3OIjdm-_g1azGpvvohNqgitHPkNVpKjB2LlOg4CklEed__rNwv2F49AAe1ijXl3Nv06FQ90hKUcMyBvGT57AyLUMV-M8jNvRqrQfL6KWY4bC5FXvLuyH_MbPdzmJiyInusjpuXuQKEzDx52LODlEHniRRPi8PZNhalBPxaMk1VYy_X-_Y8fJ6lbNTV85akmFFFC5jJdVh0ssJSV4YTz4FlqBTFYz5ofuY2ootxRNh9xFy_reMRImGZeIUdjpbGM7v_BWJJXBuvEZ9r9lJ1ZW5a2hMFTNp1Z2fGjUYQcRSj80F5tcWoeaQDaGiISWFKjmKInm3pXF9dslyNa_JlrsXwSLcNR8GdJLoWj_cy3-7R7L0OLniYXGjCuQBkf9jRqqxIE8&trk=d_flagship3_preload&refId=NmBoMI46s%2FOnckjXa242Ag%3D%3D&trackingId=VX0B128wC8nmdNbUjmr0qg%3D%3D'
+      )
+    ).toBe('linkedin');
+  });
+
+  test('null', () => {
+    expect(getJobSiteName('https://google.com/')).toBeNull();
+  });
+});
 
 describe('getHandshakeJobId Tests', () => {
   test('returns null when job id not in url', () => {
@@ -55,8 +80,8 @@ export const remoteData = {
     max: 9500000,
     currency: 'USD',
     paySchedule: {
-      name: 'Annual Salary'
-    }
+      name: 'Annual Salary',
+    },
   },
   jobType: {
     id: '9',
@@ -98,8 +123,8 @@ export const onsiteData = {
     max: 6900000,
     currency: 'USD',
     paySchedule: {
-      name: 'Annual Salary'
-    }
+      name: 'Annual Salary',
+    },
   },
   jobType: {
     id: '9',
@@ -135,7 +160,7 @@ describe('parse handshake fetch', () => {
         (el.salaryRange.max + el.salaryRange.min) / 2
       );
       expect(pd.payrate).toBe(testRate);
-      expect(pd.payType).toBe(el.salaryRange.paySchedule.name)
+      expect(pd.payType).toBe(el.salaryRange.paySchedule.name);
     });
   });
 
