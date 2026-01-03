@@ -55,8 +55,8 @@ export const remoteData = {
     max: 9500000,
     currency: 'USD',
     paySchedule: {
-      name: 'Annual Salary'
-    }
+      name: 'Annual Salary',
+    },
   },
   jobType: {
     id: '9',
@@ -98,8 +98,8 @@ export const onsiteData = {
     max: 6900000,
     currency: 'USD',
     paySchedule: {
-      name: 'Annual Salary'
-    }
+      name: 'Annual Salary',
+    },
   },
   jobType: {
     id: '9',
@@ -135,14 +135,14 @@ describe('parse handshake fetch', () => {
         (el.salaryRange.max + el.salaryRange.min) / 2
       );
       expect(pd.payrate).toBe(testRate);
-      expect(pd.payType).toBe(el.salaryRange.paySchedule.name)
+      expect(pd.payType).toBe(el.salaryRange.paySchedule.name);
     });
   });
 
-  test('invalid data returns null', () => {
-    expect(parseFetchedJob({})).toBeNull();
-    expect(parseFetchedJob('')).toBeNull();
-    expect(parseFetchedJob(1)).toBeNull();
-    expect(parseFetchedJob(1.4)).toBeNull();
+  test('invalid data throws error', () => {
+    expect(() => parseFetchedJob({})).toThrowError();
+    expect(() => parseFetchedJob('')).toThrowError();
+    expect(() => parseFetchedJob(1)).toThrowError();
+    expect(() => parseFetchedJob(1.4)).toThrowError();
   });
 });
