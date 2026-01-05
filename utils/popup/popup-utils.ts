@@ -30,7 +30,10 @@ export function parseLinkedinJob(
   const imgs = body.querySelectorAll('img');
   let companyLogoUrl = null;
   for (const img of imgs) {
-    if (img.width === 32 && img.height === 32) companyLogoUrl = img.src;
+    if (img.width === 32 && img.height === 32) {
+      companyLogoUrl = img.src;
+      break;
+    }
   }
   const description =
     body.getElementsByClassName('jobs-description__content')[0].textContent ??

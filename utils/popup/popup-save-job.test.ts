@@ -109,7 +109,7 @@ describe('parse linkedin jobs', () => {
 
     expect(jobData?.closeOutDate).toBe(undefined);
     expect(jobData.companyLogoUrl).toBe(
-      'https://media.licdn.com/dms/image/v2/D560BAQEEflnMDQtBIw/company-logo_100_100/B56ZmBZ1XPIsAQ-/0/1758812657668/varsity_tutors_logo?e=1769040000&v=beta&t=rax90CZJTgVnegus97pQutF8WRXq3IB8gzsV7WyoU0Q'
+      'https://media.licdn.com/dms/image/v2/C560BAQHDGjY1IZJuog/company-logo_100_100/company-logo_100_100/0/1631309406468?e=1769040000&v=beta&t=hDdKIPPgcU_oUP7zsPDj09K_ifvAx4XnYiu3Pefdg2I'
     );
     expect(jobData.companyName.includes('Varsity Tutors, a Nerdy Company'))
       .true;
