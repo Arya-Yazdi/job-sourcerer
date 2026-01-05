@@ -21,8 +21,10 @@ export function getHandshakeJobId(url: string): number | null {
   return null;
 }
 
+export function parseLinkedinJob(html: Document): JobInsertType { }
+
 /** @throws WARN: Error if parsing fails because of missing members in fetched data. */
-export function parseFetchedJob(data: unknown): JobInsertType {
+export function parseHandshakeJob(data: unknown): JobInsertType {
   const d = data as any; // Narrow down for now
 
   const res: typeof jobTable.$inferInsert = {
