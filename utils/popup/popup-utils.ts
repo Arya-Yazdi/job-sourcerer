@@ -17,21 +17,9 @@ export function getHandshakeJobId(url: string): number | null {
   return null;
 }
 
-export function parseFetchedJob(data: unknown): JobInsertType | null {
-  // First check that it's an object
-  if (!data || typeof data !== 'object') return null;
-
+/** @throws WARN: Error if parsing fails because of missing members in fetched data. */
+export function parseFetchedJob(data: unknown): JobInsertType {
   const d = data as any; // Narrow down for now
-
-  const invalid = !(
-    d?.description ||
-    d?.title ||
-    d?.id ||
-    d?.employer?.name ||
-    d?.locations?.[0]?.name
-  );
-
-  if (invalid) return null;
 
   const res: typeof jobTable.$inferInsert = {
     link: `https://app.joinhandshake.com/jobs/${d.id}`,
@@ -57,7 +45,7 @@ export function parseFetchedJob(data: unknown): JobInsertType | null {
   else if (empType.includes('Sea')) res.employmentType = 'Seasonal';
   else res.employmentType = 'Full-Time';
 
-  res.payType = d.salaryRange.paySchedule.name ?? '';
+  res.payType = d?.salaryRange?.paySchedule?.name ?? '';
 
   return res;
 }

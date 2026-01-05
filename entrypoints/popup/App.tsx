@@ -56,8 +56,16 @@ function App() {
     });
     if (!fetchedJob) return setStatus('Fetch failed.');
 
-    const jobData = parseFetchedJob(fetchedJob);
-    if (jobData === null) return setStatus('Job Parsing failed.');
+    let jobData = null;
+    try {
+      jobData = parseFetchedJob(fetchedJob);
+    } catch (e) {
+      if (!(e instanceof Error)) return setStatus(`Job Parsing Error`);
+      console.error(e?.stack ?? e.message);
+      return setStatus(`Job Parsing Error:<${e.message}>`);
+    } finally {
+      if (jobData === null) return;
+    }
 
     const saveOk = await saveJobData(jobData);
     setStatus(!saveOk ? 'Failed to save job.' : 'Job Saved');

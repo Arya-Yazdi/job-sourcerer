@@ -164,10 +164,10 @@ describe('parse handshake fetch', () => {
     });
   });
 
-  test('invalid data returns null', () => {
-    expect(parseFetchedJob({})).toBeNull();
-    expect(parseFetchedJob('')).toBeNull();
-    expect(parseFetchedJob(1)).toBeNull();
-    expect(parseFetchedJob(1.4)).toBeNull();
+  test('invalid data throws error', () => {
+    expect(() => parseFetchedJob({})).toThrowError();
+    expect(() => parseFetchedJob('')).toThrowError();
+    expect(() => parseFetchedJob(1)).toThrowError();
+    expect(() => parseFetchedJob(1.4)).toThrowError();
   });
 });
