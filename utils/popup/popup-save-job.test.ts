@@ -1,10 +1,13 @@
 import { onsiteData, remoteData } from './handshake-test-data.ts';
+import { JSDOM } from 'jsdom';
 import {
   getHandshakeJobId,
   getJobSiteName,
   parseHandshakeJob,
+  parseLinkedinJob,
 } from './popup-utils.ts';
 import { describe, expect, test } from 'vitest';
+import { linkedinTestHtmlString } from './linkedin-dom.ts';
 
 describe('getJobSiteName Tests', () => {
   test('handshake', () => {
@@ -95,5 +98,45 @@ describe('parse handshake fetch', () => {
     expect(() => parseHandshakeJob('')).toThrowError();
     expect(() => parseHandshakeJob(1)).toThrowError();
     expect(() => parseHandshakeJob(1.4)).toThrowError();
+  });
+});
+
+describe('parse linkedin jobs', () => {
+  test('test 1', () => {
+    const dom = new JSDOM(linkedinTestHtmlString);
+    const doc = dom.window.document;
+    const jobData = parseLinkedinJob(doc, '4348896576');
+
+    expect(jobData?.closeOutDate).toBe(undefined);
+    expect(jobData.companyLogoUrl).toBe(
+      'https://media.licdn.com/dms/image/v2/D560BAQEEflnMDQtBIw/company-logo_100_100/B56ZmBZ1XPIsAQ-/0/1758812657668/varsity_tutors_logo?e=1769040000&v=beta&t=rax90CZJTgVnegus97pQutF8WRXq3IB8gzsV7WyoU0Q'
+    );
+    expect(jobData.companyName.includes('Varsity Tutors, a Nerdy Company'))
+      .true;
+    expect(jobData?.datePosted).toBe(undefined);
+    expect(
+      jobData.description.includes(
+        'The Varsity Tutors Live Learning Platform has thousands of students looking for remote online AP Computer Science A tutors. As a tutor on the Varsity Tutors Platform, you’ll have the flexibility to set your own schedule, earn competitive rates, and make a real impact on students’ learning journeys—all from the comfort of your home.'
+      )
+    ).true;
+    expect(jobData.employmentType).toBe('Full-Time');
+    expect(jobData.intern).false;
+    expect(jobData.jobIdFromSite).toBe('linkedin-4348896576');
+    expect(jobData.link).toBe(
+      'https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4348896576'
+    );
+    expect(jobData.location.includes('Michigan, United States')).true;
+    expect(jobData.remote).true;
+    expect(jobData.title.includes('AP Computer Science A Tutor')).true;
+    expect(
+      jobData.link.includes(
+        'https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4348896576'
+      )
+    ).true;
+    expect(
+      jobData.description.includes(
+        'he Varsity Tutors Live Learning Platform has thousands of students looking for remote online AP Computer Science A tutors. As a tutor on the Varsity Tutors Platform, you’ll have the flexib'
+      )
+    ).true;
   });
 });
