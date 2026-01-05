@@ -1,4 +1,5 @@
 import {
+  employmentTypeList,
   JobInsertType,
   jobSiteNames,
   JobSiteNameType,
@@ -26,6 +27,56 @@ export function parseLinkedinJob(
   jobId: string
 ): JobInsertType {
   const { body } = document;
+  const imgs = body.querySelectorAll('img');
+  let companyLogoUrl = null;
+  for (const img of imgs) {
+    if (img.width === 32 && img.height === 32) companyLogoUrl = img.src;
+  }
+  const description =
+    body.getElementsByClassName('jobs-description__content')[0].textContent ??
+    'N/A';
+  const companyName =
+    body
+      .getElementsByClassName(
+        'job-details-jobs-unified-top-card__company-name'
+      )[0]
+      .querySelector('a')?.textContent ?? 'N/A';
+  const [buttons] = body.getElementsByClassName(
+    'job-details-fit-level-preferences'
+  );
+  const remote = buttons.textContent?.toLowerCase().includes('remote') ?? false;
+  const intern = buttons.textContent?.toLowerCase().includes('intern') ?? false;
+  const link = `https://www.linkedin.com/jobs/view/${jobId}`;
+  const location =
+    body.getElementsByClassName(
+      'job-details-jobs-unified-top-card__primary-description-container'
+    )[0]?.firstElementChild?.firstElementChild?.firstElementChild
+      ?.textContent ?? 'N/A';
+  const title =
+    body.getElementsByClassName(
+      'job-details-jobs-unified-top-card__job-title'
+    )[0].textContent ?? 'N/A';
+  let employmentType;
+  for (const empType of employmentTypeList) {
+    if (buttons.textContent?.toLowerCase().includes(empType.toLowerCase())) {
+      employmentType = empType;
+      break;
+    }
+  }
+  return {
+    jobIdFromSite: `linkedin-${jobId}`,
+    employmentType,
+    description,
+    companyName,
+    companyLogoUrl,
+    link,
+    remote,
+    location,
+    title,
+    archived: false,
+    status: 'recently added',
+    intern,
+  };
 }
 /** @throws WARN: Error if parsing fails because of missing members in fetched data. */
 export function parseHandshakeJob(data: unknown): JobInsertType {

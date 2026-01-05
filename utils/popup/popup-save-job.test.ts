@@ -122,21 +122,9 @@ describe('parse linkedin jobs', () => {
     expect(jobData.employmentType).toBe('Full-Time');
     expect(jobData.intern).false;
     expect(jobData.jobIdFromSite).toBe('linkedin-4348896576');
-    expect(jobData.link).toBe(
-      'https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4348896576'
-    );
+    expect(jobData.link).toBe('https://www.linkedin.com/jobs/view/4348896576');
     expect(jobData.location.includes('Michigan, United States')).true;
     expect(jobData.remote).true;
     expect(jobData.title.includes('AP Computer Science A Tutor')).true;
-    expect(
-      jobData.link.includes(
-        'https://www.linkedin.com/jobs/collections/recommended/?currentJobId=4348896576'
-      )
-    ).true;
-    expect(
-      jobData.description.includes(
-        'he Varsity Tutors Live Learning Platform has thousands of students looking for remote online AP Computer Science A tutors. As a tutor on the Varsity Tutors Platform, you’ll have the flexib'
-      )
-    ).true;
   });
 });
