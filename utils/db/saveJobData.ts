@@ -27,7 +27,7 @@ export async function alreadySaved({
   jobId,
 }: {
   jobSite: JobSiteNameType;
-  jobId: number;
+  jobId: string;
 }) {
   const res = await db
     .select()

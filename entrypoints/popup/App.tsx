@@ -2,7 +2,11 @@ import '@/assets/tailwind.css';
 import { useState, useEffect } from 'react';
 import logo from '/wxt.svg';
 import { PublicPath } from 'wxt/browser';
-import { getJobSiteName, parseFetchedJob } from '@/utils/popup/popup-utils';
+import {
+  getJobSiteName,
+  getLinkedInJobId,
+  parseFetchedJob,
+} from '@/utils/popup/popup-utils';
 import { alreadySaved, saveJobData } from '@/utils/db/saveJobData';
 import { useDarkMode } from '@/components/display-settings';
 import { Card, CardHeader, CardTitle } from '@/components/ui/card';
@@ -66,8 +70,14 @@ function App() {
         console.error(e?.stack ?? e.message);
         return setStatus(`Job Parsing Error:<${e.message}>`);
       }
-    } else if (jobSite === 'linkedin') {
-      setStatus('linkedin');
+    }
+
+    if (jobSite === 'linkedin') {
+      const jobId = getLinkedInJobId(activeTab.url);
+      if (jobId === null) return setStatus('No job ID found.');
+
+      if (await alreadySaved({ jobSite, jobId }))
+        return setStatus('Job Already Saved');
     }
 
     if (jobData === null) return;
