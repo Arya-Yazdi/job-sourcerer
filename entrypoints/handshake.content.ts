@@ -6,21 +6,19 @@ import { getHandshakeJobId } from '@/utils/popup/popup-utils';
 export default defineContentScript({
   matches: ['*://*.joinhandshake.com/*'],
   main() {
-    browser.runtime.onMessage.addListener(function(
-      request,
-      sender,
-      sendResponse
-    ) {
-      if (request.message === 'Handshake-getJobId') {
-        sendResponse(getHandshakeJobId(location.href));
+    browser.runtime.onMessage.addListener(
+      function(request, sender, sendResponse) {
+        if (request.message === 'Handshake-getJobId') {
+          sendResponse(getHandshakeJobId(location.href));
+        }
+        if (request.message === 'Handshake-getToken') {
+          const token = document
+            .querySelector('meta[name="csrf-token"]')
+            ?.getAttribute('content');
+          sendResponse(token);
+        }
       }
-      if (request.message === 'Handshake-getToken') {
-        const token = document
-          .querySelector('meta[name="csrf-token"]')
-          ?.getAttribute('content');
-        sendResponse(token);
-      }
-    });
+    );
 
     observeUrlChanges(async () => {
       const jobId = getHandshakeJobId(location.href);
@@ -31,6 +29,7 @@ export default defineContentScript({
       const res = await browser.runtime.sendMessage({
         type: 'check_job_exists',
         jobId,
+        site: 'handshake',
       });
 
       if (res?.tracked) {
