@@ -4,6 +4,7 @@ import { getLinkedInJobId } from '@/utils/popup/popup-utils';
 
 // Finds and returns the selected job posting url in users active (https://asu.joinhandshake.com/stu/postings) window.
 export default defineContentScript({
+  allFrames: false,
   matches: ['*://*.linkedin.com/*'],
   main() {
     browser.runtime.onMessage.addListener(
