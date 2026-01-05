@@ -86,13 +86,18 @@ function App() {
     }
 
     if (jobData === null) return;
-    const saveOk = await saveJobData(jobData);
-    setStatus(!saveOk ? 'Failed to save job.' : 'Job Saved');
+    try {
+      await saveJobData(jobData);
+    } catch (e) {
+      if (e instanceof Error) setStatus(`Failed to Save Job: ${e.message}`);
+      else setStatus('Failed to Save Job');
+      return;
+    }
+    setStatus('Job Saved');
 
-    if (saveOk)
-      browser.runtime.sendMessage({
-        type: 'close-spa',
-      });
+    browser.runtime.sendMessage({
+      type: 'close-spa',
+    });
   }
 
   return (

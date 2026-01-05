@@ -12,12 +12,12 @@ export default defineContentScript({
     browser.runtime.onMessage.addListener(
       function(request, sender, sendResponse) {
         if (request.message === getLinkedJobDataMsg) {
-          sendResponse(
-            parseLinkedinJob(
-              document,
-              getLinkedInJobId(window.location.href) ?? ''
-            )
+          const jobData = parseLinkedinJob(
+            document,
+            getLinkedInJobId(window.location.href) ?? ''
           );
+          debugger;
+          sendResponse(jobData);
         }
       }
     );
