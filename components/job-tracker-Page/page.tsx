@@ -7,6 +7,7 @@ import {
   JobSelectType,
   jobStatus,
   jobStatusEmojis,
+  JobStatusType,
   jobTable,
 } from '@/utils/db/schema';
 import { db } from '@/utils/db/db';
@@ -30,8 +31,8 @@ export function JobTrackerPage() {
 
   const filteredData = useMemo(() => {
     if (!data) return [];
-    if (tabValue === 'all') return data;
-    return data.filter((el) => el.status === tabValue);
+    const tabValFilterCB = ({ status }: { status: JobStatusType }): boolean => tabValue === 'all' || status === tabValue;
+    return data.filter(tabValFilterCB);
   }, [data, tabValue]);
 
   const table = useReactTable({
