@@ -7,7 +7,10 @@ import {
   parseLinkedinJob,
 } from './popup-utils.ts';
 import { describe, expect, test } from 'vitest';
-import { linkedinTestHtmlString } from './linkedin-dom.ts';
+import { linkedinTestHtmlString as linkedinTest1Data } from './linkedin-test1-data.ts';
+import { data as linkedinYearTestData } from './linkedin-test2-data.ts';
+import { data as linkedinSinglePayData } from './linkedin-test3-data.ts';
+import { data as linkedinNoPayRate } from './linkedin-test4-data.ts';
 
 describe('getJobSiteName Tests', () => {
   test('handshake', () => {
@@ -103,7 +106,7 @@ describe('parse handshake fetch', () => {
 
 describe('parse linkedin jobs', () => {
   test('test 1', () => {
-    const dom = new JSDOM(linkedinTestHtmlString);
+    const dom = new JSDOM(linkedinTest1Data);
     const doc = dom.window.document;
     const jobData = parseLinkedinJob(doc, '4348896576');
 
@@ -124,7 +127,27 @@ describe('parse linkedin jobs', () => {
     expect(jobData.jobIdFromSite).toBe('linkedin-4348896576');
     expect(jobData.link).toBe('https://www.linkedin.com/jobs/view/4348896576');
     expect(jobData.location.includes('Michigan, United States')).true;
+    expect(jobData.payType).toBe('Hourly Wage');
+    expect(jobData.payrate).toBe(29);
     expect(jobData.remote).true;
     expect(jobData.title.includes('AP Computer Science A Tutor')).true;
+  });
+  test('year pay rate test', () => {
+    const dom = new JSDOM(linkedinYearTestData);
+    const doc = dom.window.document;
+    const jobData = parseLinkedinJob(doc, '0');
+    expect(jobData.payrate).toBe(150_000);
+  });
+  test('single pay rate', () => {
+    const dom = new JSDOM(linkedinSinglePayData);
+    const doc = dom.window.document;
+    const jobData = parseLinkedinJob(doc, '0');
+    expect(jobData.payrate).toBe(15);
+  });
+  test('no pay rate', () => {
+    const dom = new JSDOM(linkedinNoPayRate);
+    const doc = dom.window.document;
+    const jobData = parseLinkedinJob(doc, '0');
+    expect(jobData.payrate).toBe(null);
   });
 });
