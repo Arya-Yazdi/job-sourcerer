@@ -10,6 +10,7 @@ import { describe, expect, test } from 'vitest';
 import { linkedinTestHtmlString as linkedinTest1Data } from './linkedin-test1-data.ts';
 import { data as linkedinYearTestData } from './linkedin-test2-data.ts';
 import { data as linkedinSinglePayData } from './linkedin-test3-data.ts';
+import { data as linkedinNoPayRate } from './linkedin-test4-data.ts';
 
 describe('getJobSiteName Tests', () => {
   test('handshake', () => {
@@ -142,5 +143,11 @@ describe('parse linkedin jobs', () => {
     const doc = dom.window.document;
     const jobData = parseLinkedinJob(doc, '0');
     expect(jobData.payrate).toBe(15);
+  });
+  test('no pay rate', () => {
+    const dom = new JSDOM(linkedinNoPayRate);
+    const doc = dom.window.document;
+    const jobData = parseLinkedinJob(doc, '0');
+    expect(jobData.payrate).toBe(null);
   });
 });
