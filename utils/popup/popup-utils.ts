@@ -64,8 +64,12 @@ export function parseLinkedinJob(
     const payRange = payText
       .split(' - ')
       .filter((el) => el.includes('$'))
+      .map((el) => el.toUpperCase())
+      .map((el) => el.replaceAll('K', '000'))
       .map((el) => el.replaceAll(/[^\d]/g, ''))
       .map((el) => parseInt(el));
+    // __AUTO_GENERATED_PRINT_VAR_START__
+    console.log('parseLinkedinJob#if payRange:', payRange); // __AUTO_GENERATED_PRINT_VAR_END__
     const [low, high] = payRange;
     payrate = (low + high) / 2;
   }

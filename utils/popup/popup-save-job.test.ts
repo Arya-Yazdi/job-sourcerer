@@ -7,7 +7,8 @@ import {
   parseLinkedinJob,
 } from './popup-utils.ts';
 import { describe, expect, test } from 'vitest';
-import { linkedinTestHtmlString } from './linkedin-dom.ts';
+import { linkedinTestHtmlString as linkedinTest1Data } from './linkedin-test1-data.ts';
+import { data as linkedinYearTestData } from './linkedin-test2-data.ts';
 
 describe('getJobSiteName Tests', () => {
   test('handshake', () => {
@@ -103,7 +104,7 @@ describe('parse handshake fetch', () => {
 
 describe('parse linkedin jobs', () => {
   test('test 1', () => {
-    const dom = new JSDOM(linkedinTestHtmlString);
+    const dom = new JSDOM(linkedinTest1Data);
     const doc = dom.window.document;
     const jobData = parseLinkedinJob(doc, '4348896576');
 
@@ -128,5 +129,11 @@ describe('parse linkedin jobs', () => {
     expect(jobData.payrate).toBe(29);
     expect(jobData.remote).true;
     expect(jobData.title.includes('AP Computer Science A Tutor')).true;
+  });
+  test('year pay rate test', () => {
+    const dom = new JSDOM(linkedinYearTestData);
+    const doc = dom.window.document;
+    const jobData = parseLinkedinJob(doc, '4348896576');
+    expect(jobData.payrate).toBe(150_000);
   });
 });
