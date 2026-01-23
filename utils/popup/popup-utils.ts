@@ -105,13 +105,13 @@ export function linkedInPayParser(payText: string): number {
     .split(' - ')
     .filter((el) => el.includes('$'))
     .map((el) => el.toUpperCase())
-    .map((el) => el.replaceAll('K', '000'))
-    .map((el) => el.replaceAll(/[^\d]/g, ''))
-    .map((el) => parseInt(el));
+    .map((el) => el.replaceAll(/[^\d.]/g, ''))
+    .map((el) => parseFloat(el));
   const [low, high] = payRange;
   let payrate = high ? (low + high) / 2 : low;
   payrate *= 100;
   payrate = Math.round(payrate);
+  if (payText.toUpperCase().includes('K')) payrate *= 1000;
   return payrate;
 }
 

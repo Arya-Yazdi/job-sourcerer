@@ -161,5 +161,8 @@ describe('parse linkedin jobs', () => {
   test('payParser tests', () => {
     expect(linkedInPayParser('$18/hr - $40/hr')).toBe(29_00);
     expect(linkedInPayParser('$95.2K/yr - $130.9K/yr')).toBe(113_050_00);
+    expect(linkedInPayParser('$95.2/yr - $130.9K/yr')).toBe(113_050_00);
+    expect(linkedInPayParser('$130.9K/yr')).toBe(130_900_00);
+    expect(linkedInPayParser('$130.9/yr')).toBe(130_90);
   });
 });
