@@ -1,9 +1,8 @@
 name: Publish Firefox Store
 
 on:
-  push:
-    tags:
-      - '*'
+  repository_dispatch:
+    types: [auto-released]
 
 jobs:
   submit:
