@@ -1,10 +1,9 @@
 name: Publish to Chrome Store
 
 on:
-  release:
-
-permissions:
-  contents: read
+  push:
+    tags:
+      - '*'
 
 jobs:
   submit:

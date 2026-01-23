@@ -1,10 +1,9 @@
 name: Publish Firefox Store
 
 on:
-  release:
-
-permissions:
-  contents: read
+  push:
+    tags:
+      - '*'
 
 jobs:
   submit:
