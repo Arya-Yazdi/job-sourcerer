@@ -18,6 +18,6 @@ jobs:
         id: release
       - name: Dispatch Auto Release Event
         if: ${{ steps.release.outputs.released == 'true' }}
-        name: Repository Dispatch
+        uses: peter-evans/repository-dispatch@v4
         with:
           event-type: auto-released
