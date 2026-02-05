@@ -1,5 +1,3 @@
-'use client';
-
 import {
   addJobFormSchema,
   employmentTypeList,
@@ -45,7 +43,7 @@ export function AddJobForm() {
       location: '',
       remote: false,
       payrate: undefined,
-      status: jobStatus[7],
+      status: 'recently added',
     },
   });
 
@@ -274,7 +272,7 @@ export function AddJobForm() {
                         <SelectValue placeholder='' />
                       </SelectTrigger>
                       <SelectContent>
-                        {payTypeList.map((type) =>   (
+                        {payTypeList.map((type) => (
                           <SelectItem key={type} value={type}>
                             {type}
                           </SelectItem>
