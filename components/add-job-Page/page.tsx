@@ -1,5 +1,3 @@
-'use client';
-
 import {
   addJobFormSchema,
   employmentTypeList,
@@ -274,7 +272,7 @@ export function AddJobForm() {
                         <SelectValue placeholder='' />
                       </SelectTrigger>
                       <SelectContent>
-                        {payTypeList.map((type) =>   (
+                        {payTypeList.map((type) => (
                           <SelectItem key={type} value={type}>
                             {type}
                           </SelectItem>
