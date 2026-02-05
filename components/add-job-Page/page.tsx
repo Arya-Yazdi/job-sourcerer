@@ -43,7 +43,7 @@ export function AddJobForm() {
       location: '',
       remote: false,
       payrate: undefined,
-      status: jobStatus[7],
+      status: 'recently added',
     },
   });
 
