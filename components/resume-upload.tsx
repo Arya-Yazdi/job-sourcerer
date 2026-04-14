@@ -17,6 +17,7 @@ import ResumePasteForm from "@/components/external-resume-upload.tsx";
 import { concatResumeFields } from "@/utils/concatResumeFields.ts";
 import { createResume, addRawResume } from "@/utils/db/resumes";
 import { ResumeSchema } from '@/utils/db/schema.ts';
+import { ResumePdfUpload } from "./resume-pdf-upload";
 
 export function ResumeForm() {
   const [recordName, setRecordName] = useState(""); // <-- hook at top level
@@ -494,7 +495,7 @@ export function ResumeForm() {
 }
 
 export function ResumeUpload() {
-  const [mode, setMode] = useState<"builder" | "paste">("builder");
+  const [mode, setMode] = useState<"builder" | "paste" | "pdf">("builder");
   const base =
     "px-4 py-2 text-sm font-medium rounded-full border transition-colors focus:outline-none focus:ring-2 focus:ring-indigo-500";
   const active =
@@ -525,10 +526,21 @@ export function ResumeUpload() {
         >
           Paste Text
         </button>
+
+        <button
+          type="button"
+          aria-pressed={mode === "pdf"}
+          onClick={() => setMode("pdf")}
+          className={`${base} ${mode === "pdf" ? active : inactive}`}
+        >
+          Upload PDF
+        </button>
       </div>
 
       <div className="mt-4">
-        {mode === "builder" ? <ResumeForm /> : <ResumePasteForm />}
+        {mode === "builder" && <ResumeForm />}
+        {mode === "paste" && <ResumePasteForm />}
+        {mode === "pdf" && <ResumePdfUpload />}
       </div>
     </div>
   );
